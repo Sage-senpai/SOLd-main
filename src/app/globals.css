@@ -2,21 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --sold-void: #030303;
+  --sold-ink: #0b0b0b;
+  --sold-smoke: #242424;
+  --sold-ash: #5c5c5c;
+  --sold-fog: #e7e4dd;
+  --sold-bone: #f7f5ef;
+  --sold-white: #ffffff;
+  --sold-shadow: 14px 16px 0 rgba(0, 0, 0, 0.92);
+  --sold-soft-shadow: 0 24px 80px rgba(0, 0, 0, 0.16);
+  --sold-sigil: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  --sold-notch: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
 html {
-  background-color: rgb(10, 10, 10);
-  color: rgb(243, 244, 246);
+  background: var(--sold-bone);
+  color: var(--sold-ink);
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'IBM Plex Sans', Inter, system-ui, sans-serif;
-  line-height: 1.5;
   min-height: 100vh;
+  background: var(--sold-bone);
+  color: var(--sold-ink);
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.55;
+  text-rendering: geometricPrecision;
 }
 
 ::selection {
-  background: #7c3aed;
-  color: #ffffff;
+  background: var(--sold-ink);
+  color: var(--sold-white);
 }
 
 @keyframes sold-drift {
@@ -63,46 +80,178 @@ body {
     letter-spacing: 0;
   }
 
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   :focus-visible {
-    outline: 2px solid #7c3aed;
+    outline: 2px solid var(--sold-ink);
     outline-offset: 4px;
   }
 }
 
 @layer components {
-  .card {
-    @apply bg-sold-gray-800 rounded-lg border border-sold-gray-700 p-6;
+  .nascent-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(0, 0, 0, 0.1), transparent 24rem),
+      radial-gradient(circle at 78% 8%, rgba(0, 0, 0, 0.08), transparent 18rem),
+      linear-gradient(115deg, rgba(255, 255, 255, 0.95), rgba(238, 235, 226, 0.9));
   }
 
-  .btn-primary {
-    @apply bg-sold-primary hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors;
+  .nascent-bg::before {
+    content: '';
+    position: absolute;
+    inset: -12%;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 76px 76px;
+    mask-image: radial-gradient(circle at center, black, transparent 72%);
+    animation: sold-drift 18s ease-in-out infinite;
   }
 
-  .btn-secondary {
-    @apply bg-sold-gray-700 hover:bg-sold-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors;
+  .nascent-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(107deg, transparent 0 34px, rgba(0, 0, 0, 0.08) 35px, transparent 36px),
+      radial-gradient(circle at 50% 50%, transparent 0 26%, rgba(0, 0, 0, 0.05) 27%, transparent 29%);
+    animation: sold-pulse-line 9s ease-in-out infinite;
   }
 
-  .btn-danger {
-    @apply bg-sold-danger hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors;
+  .sigil-field {
+    position: absolute;
+    inset: 14vh 5vw auto auto;
+    width: min(44vw, 560px);
+    aspect-ratio: 1;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    clip-path: polygon(50% 0, 94% 23%, 94% 77%, 50% 100%, 6% 77%, 6% 23%);
+    box-shadow: inset 0 0 0 22px rgba(255, 255, 255, 0.36), inset 0 0 70px rgba(0, 0, 0, 0.12);
+    animation: sold-drift 24s ease-in-out infinite reverse;
   }
 
-  .badge-success {
-    @apply bg-green-900 text-sold-success px-3 py-1 rounded-full text-sm font-semibold;
+  .section-shell {
+    position: relative;
+    z-index: 1;
+    width: min(1180px, calc(100% - 32px));
+    margin-inline: auto;
   }
 
-  .badge-danger {
-    @apply bg-red-900 text-sold-danger px-3 py-1 rounded-full text-sm font-semibold;
+  .ink-panel {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 0, 0, 0.86);
+    clip-path: var(--sold-sigil);
+    box-shadow: var(--sold-shadow);
+    backdrop-filter: blur(12px);
+  }
+
+  .ink-card {
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    clip-path: var(--sold-sigil);
+    box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.9);
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .ink-card:hover {
+    transform: translate(-3px, -4px);
+    box-shadow: 14px 16px 0 rgba(0, 0, 0, 0.92);
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .shadow-word {
+    text-shadow: 4px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .rune-rule {
+    height: 1px;
+    background:
+      linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.9), transparent),
+      repeating-linear-gradient(90deg, transparent 0 14px, rgba(0, 0, 0, 0.55) 15px 16px);
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger,
+  .sold-button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    clip-path: var(--sold-notch);
+    border: 1px solid var(--sold-ink);
+    padding: 0.75rem 1.1rem;
+    font-family: Unbounded, 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      background-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .btn-primary,
+  .sold-button-primary {
+    background: var(--sold-ink);
+    color: var(--sold-white);
+    box-shadow: 7px 8px 0 rgba(0, 0, 0, 0.22);
+  }
+
+  .btn-secondary,
+  .sold-button-secondary {
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--sold-ink);
+    box-shadow: 7px 8px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  .btn-danger,
+  .sold-button-danger {
+    background: var(--sold-ink);
+    color: var(--sold-white);
+    box-shadow: 7px 8px 0 rgba(0, 0, 0, 0.26);
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-danger:hover,
+  .sold-button:hover {
+    transform: translate(-2px, -3px);
+    box-shadow: 11px 12px 0 rgba(0, 0, 0, 0.28);
+  }
+
+  .glyph-badge {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    border: 1px solid var(--sold-ink);
+    clip-path: var(--sold-notch);
+    background: rgba(255, 255, 255, 0.74);
+    padding: 0.35rem 0.7rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .metric-number {
+    font-family: 'Space Mono', monospace;
+    font-variant-numeric: tabular-nums;
   }
 
   .appear {
     animation: sold-enter 520ms ease both;
-  }
-
-  .drift {
-    animation: sold-drift 18s ease-in-out infinite;
-  }
-
-  .pulse-line {
-    animation: sold-pulse-line 9s ease-in-out infinite;
   }
 }

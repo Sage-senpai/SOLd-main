@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'SOLd. — Driver Hub, Campaigns & Admin',
-  description: 'The operational app for the SOLd. decentralized sales guild on Solana.',
+  description: 'A monochrome sales protocol where drivers earn 100% of their bounty on-chain.',
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-sold-gray-900 text-sold-gray-100">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

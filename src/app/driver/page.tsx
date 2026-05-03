@@ -42,85 +42,98 @@ export default function DriverHub() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-sold-gray-900 text-sold-gray-100">
-      <nav className="sticky top-0 z-50 bg-sold-gray-900/95 border-b border-sold-gray-700">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-sold-primary font-eldritch">
+    <main className="relative min-h-screen overflow-hidden text-sold-gray-900">
+      <div className="nascent-bg" aria-hidden="true" />
+
+      <nav className="section-shell sticky top-4 z-50 pt-4">
+        <div className="ink-panel flex items-center justify-between px-4 py-3 md:px-6">
+          <Link href="/" className="font-eldritch text-xl font-bold">
             SOLd.
           </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <span className="text-sold-gray-400 text-sm uppercase tracking-wider">Driver Hub</span>
+          <div className="hidden items-center gap-6 font-mono text-xs uppercase md:flex">
+            <span className="text-sold-gray-600">Driver Hub</span>
           </div>
-          <button className="btn-primary text-sm">Sign Out</button>
+          <button className="btn-primary px-4 py-2 text-xs">
+            Sign Out
+          </button>
         </div>
       </nav>
 
-      <section className="max-w-7xl mx-auto px-6 py-12 appear">
-        <div className="card mb-8">
-          <div className="grid md:grid-cols-2 gap-8">
+      <section className="section-shell relative z-10 pt-10">
+        {/* Soul Stat Card */}
+        <div className="ink-panel mb-10 p-6 md:p-8">
+          <div className="grid gap-8 md:grid-cols-[1fr_1fr]">
             <div>
-              <p className="text-sold-gray-500 text-sm uppercase mb-2">Your Reputation</p>
-              <h1 className="text-4xl font-bold mb-6 text-sold-primary">Soul Stat / You</h1>
+              <p className="font-mono text-xs uppercase text-sold-gray-600 mb-2">Your Reputation</p>
+              <h1 className="text-4xl font-bold mb-6">Soul Stat / You</h1>
               <div className="space-y-4">
                 <div>
-                  <p className="text-sold-gray-400 text-sm mb-1">Volume Sold</p>
-                  <p className="text-3xl font-bold font-mono">{earnings.totalVolume}</p>
+                  <p className="font-mono text-xs uppercase text-sold-gray-600 mb-2">Volume Sold</p>
+                  <p className="metric-number text-3xl font-bold">{earnings.totalVolume}</p>
                 </div>
                 <div>
-                  <p className="text-sold-gray-400 text-sm mb-1">Verification Rating</p>
-                  <p className="text-3xl font-bold font-mono text-sold-success">{earnings.reputation}</p>
+                  <p className="font-mono text-xs uppercase text-sold-gray-600 mb-2">Rating</p>
+                  <p className="metric-number text-3xl font-bold">{earnings.reputation}</p>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
               {[
                 ['Level', '4'],
                 ['Active Referrals', earnings.activeReferrals.toString()],
                 ['This Month', earnings.monthlyEarnings],
                 ['Status', 'Active'],
               ].map(([label, value]) => (
-                <div key={label} className="bg-sold-gray-900 border border-sold-gray-700 rounded-lg p-4">
-                  <p className="text-sold-gray-500 text-xs uppercase mb-2">{label}</p>
-                  <p className="text-xl font-bold font-mono">{value}</p>
+                <div key={label} className="border border-sold-gray-900 bg-white/70 p-3">
+                  <p className="font-mono text-xs uppercase text-sold-gray-600">{label}</p>
+                  <p className="metric-number mt-2 text-lg font-bold">{value}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">Available Campaigns</h2>
-          <p className="text-sold-gray-400 mb-6">100% of base bounty goes to you.</p>
+        {/* Pure B Feed - Live Campaigns */}
+        <div className="mb-10">
+          <div className="mb-6">
+            <div className="glyph-badge mb-4">Active Bounties</div>
+            <h2 className="text-3xl font-bold">Campaigns Seeking Scouts</h2>
+          </div>
 
           {loading ? (
-            <div className="card text-center py-12">
-              <p className="text-sold-gray-400">Loading campaigns...</p>
+            <div className="ink-card p-8 text-center">
+              <p className="text-sold-gray-600">Loading campaigns...</p>
             </div>
           ) : campaigns.length === 0 ? (
-            <div className="card">
-              <p className="text-sold-gray-400 mb-2">No campaigns available right now.</p>
-              <p className="text-sold-gray-500 text-sm">Check back soon for new opportunities.</p>
+            <div className="ink-card p-8">
+              <p className="font-mono text-sm uppercase text-sold-gray-600 mb-4">No campaigns available</p>
+              <p className="text-sold-gray-700">Check back soon for new distribution opportunities.</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-4 md:grid-cols-2">
               {campaigns.map((campaign) => (
-                <article key={campaign.id} className="card hover:border-sold-primary transition">
-                  <p className="text-sold-success text-xs uppercase mb-2">100% bounty</p>
-                  <h3 className="text-xl font-semibold mb-4">{campaign.title}</h3>
+                <article key={campaign.id} className="ink-card p-6">
+                  <p className="font-mono text-xs uppercase text-sold-gray-600">100% of bounty</p>
+                  <h3 className="mt-4 text-2xl font-bold">{campaign.title}</h3>
 
-                  <div className="space-y-2 mb-6 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-sold-gray-500">Per Sale</span>
-                      <span className="font-mono font-bold text-sold-primary">${campaign.bountyB}</span>
+                  <div className="rune-rule my-4" />
+
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between items-start">
+                      <span className="font-mono text-xs text-sold-gray-600">Per Sale</span>
+                      <span className="metric-number font-bold text-lg">${campaign.bountyB}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-sold-gray-500">Type</span>
-                      <span className="font-mono uppercase text-sold-gray-300">{campaign.productType}</span>
+                    <div className="flex justify-between items-start">
+                      <span className="font-mono text-xs text-sold-gray-600">Type</span>
+                      <span className="font-mono text-xs uppercase font-bold">{campaign.productType}</span>
                     </div>
                   </div>
 
-                  <Link href={`/driver/campaign/${campaign.id}`} className="btn-primary w-full text-center block">
+                  <Link
+                    href={`/driver/campaign/${campaign.id}`}
+                    className="btn-primary w-full text-center"
+                  >
                     Claim Campaign
                   </Link>
                 </article>
@@ -129,31 +142,38 @@ export default function DriverHub() {
           )}
         </div>
 
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-2">Pending Payouts</h2>
-          <p className="text-sold-gray-400 mb-6 text-sm">Escrow status for verified sales.</p>
+        {/* Payout Dashboard */}
+        <div className="ink-panel p-6 md:p-8">
+          <div className="mb-6">
+            <div className="glyph-badge mb-4">Escrow Status</div>
+            <h2 className="text-3xl font-bold">Pending Payouts</h2>
+          </div>
 
           <div className="space-y-3">
             {[
-              { campaign: 'Hardware Wallet Q4', amount: '$2,400', status: 'Challenge Window (48h)', cls: 'badge-danger' },
-              { campaign: 'Payment Device Nigeria', amount: '$1,850', status: 'Verified', cls: 'badge-success' },
-              { campaign: 'NFC Cards Test', amount: '$950', status: 'Released', cls: 'badge-success' },
-            ].map((p) => (
-              <div key={p.campaign} className="bg-sold-gray-900 border border-sold-gray-700 rounded-lg p-4 flex justify-between items-center gap-4">
-                <div className="flex-1">
-                  <p className="text-sold-gray-400 text-xs uppercase mb-1">{p.campaign}</p>
-                  <p className="text-xl font-bold font-mono">{p.amount}</p>
+              { campaign: 'Hardware Wallet Q4', amount: '$2,400', status: 'Challenge Window (48h)' },
+              { campaign: 'Payment Device Nigeria', amount: '$1,850', status: 'Verified' },
+              { campaign: 'NFC Cards Test', amount: '$950', status: 'Released' },
+            ].map((payout) => (
+              <div key={payout.campaign} className="border border-sold-gray-900 bg-white/70 p-4">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-1">
+                    <p className="font-mono text-xs uppercase text-sold-gray-600 mb-1">{payout.campaign}</p>
+                    <p className="metric-number text-xl font-bold">{payout.amount}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="glyph-badge text-xs">{payout.status}</p>
+                  </div>
                 </div>
-                <span className={p.cls}>{p.status}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-sold-gray-700 mt-12">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-sold-gray-500 text-sm uppercase tracking-wider">
-          Earn. Prove. Scale.
+      <footer className="section-shell relative z-10 pb-10 pt-8">
+        <div className="border-t border-sold-gray-900 pt-6 font-mono text-xs uppercase">
+          <p>Earn. Prove. Scale.</p>
         </div>
       </footer>
     </main>

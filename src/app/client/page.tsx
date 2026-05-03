@@ -40,41 +40,49 @@ export default function ClientPortal() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-sold-gray-900 text-sold-gray-100">
-      <nav className="sticky top-0 z-50 bg-sold-gray-900/95 border-b border-sold-gray-700">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-sold-primary font-eldritch">
+    <main className="relative min-h-screen overflow-hidden text-sold-gray-900">
+      <div className="nascent-bg" aria-hidden="true" />
+
+      <nav className="section-shell sticky top-4 z-50 pt-4">
+        <div className="ink-panel flex items-center justify-between px-4 py-3 md:px-6">
+          <Link href="/" className="font-eldritch text-xl font-bold">
             SOLd.
           </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <span className="text-sold-gray-400 text-sm uppercase tracking-wider">Vendor Portal</span>
+          <div className="hidden items-center gap-6 font-mono text-xs uppercase md:flex">
+            <span className="text-sold-gray-600">Vendor Portal</span>
           </div>
-          <button className="btn-primary text-sm">Sign Out</button>
+          <button className="btn-primary px-4 py-2 text-xs">
+            Sign Out
+          </button>
         </div>
       </nav>
 
-      <section className="max-w-7xl mx-auto px-6 py-12 appear">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Your Distribution Network</h1>
-          <p className="text-sold-gray-400">Campaign performance and ROI analytics.</p>
+      <section className="section-shell relative z-10 pt-10">
+        {/* ROI Dashboard */}
+        <div className="mb-10">
+          <div className="mb-6">
+            <div className="glyph-badge mb-4">Campaign Performance</div>
+            <h1 className="text-4xl font-bold">Your Distribution Network</h1>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+            {Object.entries(metrics).map(([label, value]) => (
+              <div key={label} className="ink-card p-6">
+                <p className="font-mono text-xs uppercase text-sold-gray-600 mb-2">
+                  {label.replace(/([A-Z])/g, ' $1').trim()}
+                </p>
+                <p className="metric-number text-2xl font-bold">{value}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {Object.entries(metrics).map(([label, value]) => (
-            <div key={label} className="card">
-              <p className="text-sold-gray-500 text-xs uppercase mb-2">
-                {label.replace(/([A-Z])/g, ' $1').trim()}
-              </p>
-              <p className="text-2xl font-bold font-mono text-sold-primary">{value}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="card mb-8">
-          <div className="flex justify-between items-center gap-4 mb-6">
+        {/* Campaign Manager */}
+        <div className="ink-panel mb-10 p-6 md:p-8">
+          <div className="flex items-center justify-between gap-4 mb-8">
             <div>
-              <h2 className="text-2xl font-bold">Active Campaigns</h2>
-              <p className="text-sold-gray-400 text-sm">Manage your funded escrow contracts.</p>
+              <div className="glyph-badge mb-4">Active Campaigns</div>
+              <h2 className="text-3xl font-bold">Escrow Contracts</h2>
             </div>
             <Link href="/client/create" className="btn-primary">
               Launch Campaign
@@ -83,28 +91,45 @@ export default function ClientPortal() {
 
           <div className="space-y-3">
             {[
-              { title: 'Hardware Wallet Distribution', escrow: '$115,000', active: 18, conversions: 92, roi: '127%' },
-              { title: 'Payment Device Nigeria', escrow: '$57,500', active: 5, conversions: 34, roi: '94%' },
-            ].map((c) => (
-              <div key={c.title} className="bg-sold-gray-900 border border-sold-gray-700 rounded-lg p-4">
+              {
+                title: 'Hardware Wallet Distribution',
+                escrow: '$115,000',
+                active: 18,
+                conversions: 92,
+                roi: '127%',
+              },
+              {
+                title: 'Payment Device Nigeria',
+                escrow: '$57,500',
+                active: 5,
+                conversions: 34,
+                roi: '94%',
+              },
+            ].map((campaign) => (
+              <div key={campaign.title} className="border border-sold-gray-900 bg-white/70 p-4">
                 <div className="grid md:grid-cols-6 gap-4 items-center">
                   <div className="md:col-span-2">
-                    <p className="font-semibold">{c.title}</p>
-                    <p className="text-sold-gray-500 text-xs mt-1 font-mono">Escrow: {c.escrow}</p>
+                    <p className="font-bold text-sm">{campaign.title}</p>
+                    <p className="font-mono text-xs text-sold-gray-600 mt-1">
+                      Escrow: {campaign.escrow}
+                    </p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sold-gray-500 text-xs uppercase">Drivers</p>
-                    <p className="font-mono font-bold">{c.active}</p>
+                    <p className="font-mono text-xs uppercase text-sold-gray-600">Active Drivers</p>
+                    <p className="metric-number text-lg font-bold">{campaign.active}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sold-gray-500 text-xs uppercase">Conversions</p>
-                    <p className="font-mono font-bold">{c.conversions}</p>
+                    <p className="font-mono text-xs uppercase text-sold-gray-600">Conversions</p>
+                    <p className="metric-number text-lg font-bold">{campaign.conversions}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sold-gray-500 text-xs uppercase">ROI</p>
-                    <p className="font-mono font-bold text-sold-success">{c.roi}</p>
+                    <p className="font-mono text-xs uppercase text-sold-gray-600">ROI</p>
+                    <p className="metric-number text-lg font-bold">{campaign.roi}</p>
                   </div>
-                  <Link href={`/client/campaign/${c.title}`} className="btn-secondary text-center text-sm">
+                  <Link
+                    href={`/client/campaign/${campaign.title}`}
+                    className="btn-secondary text-center text-xs"
+                  >
                     Manage
                   </Link>
                 </div>
@@ -113,9 +138,12 @@ export default function ClientPortal() {
           </div>
         </div>
 
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-2">Drivers by Region</h2>
-          <p className="text-sold-gray-400 text-sm mb-6">Geographic distribution of your sales network.</p>
+        {/* Active Drivers Map Data */}
+        <div className="ink-panel p-6 md:p-8">
+          <div className="mb-6">
+            <div className="glyph-badge mb-4">Network Distribution</div>
+            <h2 className="text-3xl font-bold">Drivers by Region</h2>
+          </div>
 
           <div className="space-y-3">
             {[
@@ -123,22 +151,26 @@ export default function ClientPortal() {
               { region: 'Abuja, Nigeria', drivers: 6, sales: '$18,900' },
               { region: 'Accra, Ghana', drivers: 5, sales: '$12,400' },
               { region: 'Nairobi, Kenya', drivers: 8, sales: '$29,300' },
-            ].map((r) => (
-              <div key={r.region} className="bg-sold-gray-900 border border-sold-gray-700 rounded-lg p-4 flex justify-between items-center">
-                <div>
-                  <p className="text-sold-gray-500 text-xs uppercase mb-1">{r.region}</p>
-                  <p className="font-semibold">{r.drivers} Active Scouts</p>
+            ].map((item) => (
+              <div key={item.region} className="border border-sold-gray-900 bg-white/70 p-4">
+                <div className="flex justify-between items-center gap-4">
+                  <div>
+                    <p className="font-mono text-xs uppercase text-sold-gray-600 mb-1">{item.region}</p>
+                    <p className="font-bold">{item.drivers} Active Scouts</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="metric-number text-lg font-bold">{item.sales}</p>
+                  </div>
                 </div>
-                <p className="text-xl font-bold font-mono text-sold-primary">{r.sales}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-sold-gray-700 mt-12">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-sold-gray-500 text-sm uppercase tracking-wider">
-          ROI Driven. Data Ready.
+      <footer className="section-shell relative z-10 pb-10 pt-8">
+        <div className="border-t border-sold-gray-900 pt-6 font-mono text-xs uppercase">
+          <p>ROI Driven. Data Ready.</p>
         </div>
       </footer>
     </main>
