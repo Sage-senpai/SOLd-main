@@ -9,3 +9,7 @@ dist
 *.log
 .vercel
 .turbo
+
+# Source archives & gap analysis (kept locally, not committed)
+*.zip
+sold_platform_gap_analysis.html
